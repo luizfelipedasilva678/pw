@@ -28,7 +28,7 @@
 
     $fibResult = fibArray($rand);
 
-    foreach($fibResult as $fibValue) {
+    foreach ($fibResult as $fibValue) {
         echo "$fibValue ";
     }
 ?>
