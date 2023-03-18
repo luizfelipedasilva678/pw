@@ -1,6 +1,6 @@
 <?php
 
-    function formatTelefone($telefone) {
+    function formatTelefone ($telefone) {
         $telefoneLength = mb_strlen($telefone);
         $allCharactersAreValids = preg_match_all("/^\d+$/i", $telefone);
         $formatedNumber = "";
@@ -16,7 +16,7 @@
             case 10: {
                 $formatedNumber = "(" . 
                 mb_substr($telefone, 0, 2) . ") ". 
-                mb_substr($telefone, 2, 4) . "-". 
+                mb_substr($telefone, 2, 4) . "-" . 
                 mb_substr($telefone, 6, 4);
 
                 return $formatedNumber;
@@ -24,8 +24,8 @@
             case 11: {
                 $isFree = preg_match_all("/^(0800|0300)\d+$/i", $telefone);
 
-                $formatedNumber = "(" . 
-                mb_substr($telefone, 0, 2) . ") ". 
+                $formatedNumber =
+                "(" .  mb_substr($telefone, 0, 2) . ") ". 
                 mb_substr($telefone, 2, 1) . "-" . 
                 mb_substr($telefone, 3, 4) . "-". 
                 mb_substr($telefone, 7, 4);
