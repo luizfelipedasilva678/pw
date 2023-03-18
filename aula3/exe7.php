@@ -35,38 +35,36 @@
                 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
             </head>
-            <body>
-                <table>
-                    <thead>
-                        <tr>   
-                            <th>Produtos</th>
-                            <th>Estoque</th>
-                            <th>Preço</th>
-                        </tr>
-                    </thead>
-                    <tbody>
+        <body>
+            <table>
+                <thead>
+                    <tr>   
+                        <th>Produtos</th>
+                        <th>Estoque</th>
+                        <th>Preço</th>
+                    </tr>
+                </thead>
+                <tbody>
     END;
-                    
     foreach ($produtos as $produto) {
         $html .= <<<END
-            <tr>
-                <td>$produto[0]</td>
-                <td>$produto[1]</td>
-                <td>$produto[2]</td>
-            </tr>
+                <tr>
+                    <td>$produto[0]</td>
+                    <td>$produto[1]</td>
+                    <td>$produto[2]</td>
+                </tr>
         END;
     }
-
     $html .= <<<END
-                    </tbody>
-                    <tfoot>
-                        <tr colspan='2'>
-                            <td>Estoque Total $totalStock </td>
-                        </tr>
-                    </tfoot>
-                </table>
-            </body>
-        </html>
+                </tbody>
+                <tfoot>
+                    <tr colspan='2'>
+                        <td>Estoque Total $totalStock </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </body>
+    </html>
     END;
 
     $htmlFile = fopen("produtos.html", "w+");
