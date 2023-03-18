@@ -69,4 +69,4 @@
 
     $htmlFile = fopen("produtos.html", "w+");
     fwrite($htmlFile, $html);
-   
+    fclose($htmlFile);
