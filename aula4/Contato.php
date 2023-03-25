@@ -2,15 +2,16 @@
     class Contato {
         private $name = '';
         private $telefone = '';
+        static public $contatosCriados = 0;
 
         public function __construct($name = '', $telefone = '') 
         {
             $this->setTelefone($telefone);
             $this->setName($name);
             //echo "Criado " . $this->formatar() . PHP_EOL;
-        }
 
-        
+            Contato::$contatosCriados += 1;
+        }
 
         public function __destruct()
         {
@@ -80,4 +81,5 @@
     $c3 = new ContatoProfissional("Pedro", "12345678", "asdasd@gmail.com");
     
     echo $c3->formatar() . PHP_EOL;
+    echo "Contatos criados: " . Contato::$contatosCriados . PHP_EOL;
 ?>
