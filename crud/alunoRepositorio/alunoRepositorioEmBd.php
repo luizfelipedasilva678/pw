@@ -90,7 +90,7 @@ class AlunoRepositorioEmBd implements AlunoRepositorio
         try {
             $ps = $this->pdo->prepare("update aluno set nome = ?, data_nascimento = ?, cpf = ? where id = ?");
             $ps->execute([
-                $aluno->getNome(),
+                $aluno->getName(),
                 $aluno->getDataNascimento(),
                 $aluno->getCpf(),
                 $aluno->getId()
@@ -109,12 +109,11 @@ class AlunoRepositorioEmBd implements AlunoRepositorio
     public function criar($aluno): bool
     {
         try {
-            $ps = $this->pdo->prepare("inser into aluno(nome, data_nascimento, cpf) values(?, ?, ?)");
+            $ps = $this->pdo->prepare("insert into aluno(nome, data_nascimento, cpf) values(?, ?, ?)");
             $ps->execute([
-                $aluno->getNome(),
+                $aluno->getName(),
                 $aluno->getDataNascimento(),
-                $aluno->getCpf(),
-                $aluno->getId()
+                $aluno->getCpf()
             ]);
 
             if ($ps->rowCount() < 1) {

@@ -30,7 +30,7 @@ class Aluno
 
     public function getDataNascimento()
     {
-        return $this->dataNascimento;
+        return $this->dataNascimento->format('Y-m-d H:i:s');
     }
 
     public function getCpf()
