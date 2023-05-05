@@ -1,3 +1,5 @@
 <?php
 
-    class RepositorioException extends Exception {}
+class RepositorioException extends Exception
+{
+}

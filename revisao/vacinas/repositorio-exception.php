@@ -1,5 +1,7 @@
 <?php
 
-    namespace vac;
+namespace vac;
 
-    class RepositorioExeception extends \Exception {}
+class RepositorioExeception extends \Exception
+{
+}

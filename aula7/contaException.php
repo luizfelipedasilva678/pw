@@ -1,3 +1,5 @@
-<?php 
+<?php
 
-    class ContaException extends Exception {}
+class ContaException extends Exception
+{
+}
