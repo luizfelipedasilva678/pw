@@ -39,7 +39,7 @@
                             <td>{$materiaPrima->getCusto()}</td>
                             <td>{$materiaPrima->getCategoria()->getNome()}</td>
                             <td>
-                                <a href='/views/atualizar.php?id={$materiaPrima->getId()}'>Atualizar</a>
+                                <a href='/views/formAtualizar.php?id={$materiaPrima->getId()}'>Atualizar</a>
                                 <a href='/actions/remover.php?id={$materiaPrima->getId()}'>Remover</a>
                             </td>
                         </tr>

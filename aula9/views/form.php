@@ -28,9 +28,9 @@
                 $categorias = $repositorioCategoria->buscarCategorias();
 
                 foreach ($categorias as $categoria) {
-                    echo <<<TABLEROW
-                            <option value="{$categoria->getId()}">{$categoria->getNome()}</option>
-                        TABLEROW;
+                    echo <<<OPTION
+                        <option value="{$categoria->getId()}">{$categoria->getNome()}</option>
+                    OPTION;
                 }
             } catch (RepositorioException $e) {
                 echo $e->getMessage();

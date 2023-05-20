@@ -32,6 +32,36 @@ class RepositorioMateriaPrimaEmBdr implements RepositorioMateriaPrima
         }
     }
 
+    public function buscarMateriasPrimaPeloId(int $id): object
+    {
+        try {
+            $ps = $this->pdo->prepare(
+                '
+                    select
+                        mp.id as materia_prima_id,
+                        mp.descricao,
+                        mp.custo,
+                        mp.quantidade,
+                        c.id as categoria_id,
+                        c.nome
+                    from
+                        materia_prima mp
+                    join categoria c on(mp.id_categoria = c.id)
+                    where mp.id = ?'
+            );
+            $ps->execute([
+                $id
+            ]);
+
+            $mp = $ps->fetchObject();
+            $categoria = new Categoria($mp->categoria_id, $mp->nome);
+            $materiaPrima = new MateriaPrima($mp->materia_prima_id, $mp->descricao, $mp->quantidade, $mp->custo, $categoria);
+
+            return $materiaPrima;
+        } catch (PDOException $e) {
+            throw new RepositorioException("Erro ao buscar pelo id");
+        }
+    }
 
 
     public function buscarMateriasPrimas(): array

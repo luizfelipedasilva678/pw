@@ -6,4 +6,5 @@ interface RepositorioMateriaPrima
     public function atualizarMateriaPrima(object $materiaPrima): void;
     public function cadastrarMateriaPrima(object $materiaPrima): void;
     public function removerMateriaPrima(int $id): void;
+    public function buscarMateriasPrimaPeloId(int $id): object;
 }
