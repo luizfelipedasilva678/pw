@@ -89,6 +89,8 @@ do {
 
                     $aluno = $repositorio->pegarPeloId($id);
 
+                    if (!isset($aluno)) break;
+
                     echo PHP_EOL;
                     echo "ID: " . $aluno->getId() . " ";
                     echo "NOME: " . $aluno->getName() . " ";

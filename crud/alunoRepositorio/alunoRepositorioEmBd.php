@@ -20,7 +20,7 @@ class AlunoRepositorioEmBd implements AlunoRepositorio
     private function getConnection()
     {
         try {
-            return getConnection();
+            return \getConnection();
         } catch (\PDOException $e) {
             throw new AlunoRepositorioException($e->getMessage());
         }

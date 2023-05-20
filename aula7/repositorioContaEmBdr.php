@@ -16,6 +16,7 @@ class RepositorioContaEmBdr implements RepositorioConta
         $this->pdo = $pdo;
     }
 
+
     function cadastrar(Conta $conta)
     {
         try {
