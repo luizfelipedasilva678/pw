@@ -21,8 +21,8 @@
             <th>Ações</th>
         </thead>
         <?php
-        require_once('getConnection.php');
-        require_once('RepositorioAcmeEmBdr.php');
+        require_once(dirname(__FILE__) . "/utils/getConnection.php");
+        require_once(dirname(__FILE__) . "/repositories/RepositorioAcmeEmBdr.php");
         try {
             $pdo = getConnection();
             $repositorio = new RepositorioAcmeEmBdr($pdo);
@@ -39,8 +39,8 @@
                             <td>{$materiaPrima->getCusto()}</td>
                             <td>{$materiaPrima->getCategoria()->getNome()}</td>
                             <td>
-                                <a href='atualizar.php?id={$materiaPrima->getId()}'>Atualizar</a>
-                                <a href='remover.php?id={$materiaPrima->getId()}'>Remover</a>
+                                <a href='/views/atualizar.php?id={$materiaPrima->getId()}'>Atualizar</a>
+                                <a href='/actions/remover.php?id={$materiaPrima->getId()}'>Remover</a>
                             </td>
                         </tr>
                     TABLEROW;
@@ -50,7 +50,7 @@
             echo <<<TFOOT
                     <tfoot>
                         <td>
-                            Media $media
+                            Custo médio: $media
                         </td>
                     </tfoot>
                 TFOOT;

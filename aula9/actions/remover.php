@@ -1,6 +1,7 @@
 <?php
-require_once('getConnection.php');
-require_once('RepositorioAcmeEmBdr.php');
+
+require_once(dirname(__FILE__) . "/../utils/getConnection.php");
+require_once(dirname(__FILE__) . "/../repositories/RepositorioAcmeEmBdr.php");
 
 $id = htmlspecialchars($_GET['id']);
 
@@ -9,7 +10,7 @@ try {
     $repositorio = new RepositorioAcmeEmBdr($pdo);
     $repositorio->removerMateriaPrima((int) $id);
 
-    header('Location: index.php');
+    header('Location: /../index.php');
 } catch (RepositorioException $e) {
     echo $e->getMessage();
 }

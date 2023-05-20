@@ -1,8 +1,9 @@
 <?php
-require_once('getConnection.php');
-require_once('RepositorioAcmeEmBdr.php');
-require_once('Categoria.php');
-require_once('MateriaPrima.php');
+
+require_once(dirname(__FILE__) . "/../utils/getConnection.php");
+require_once(dirname(__FILE__) . "/../repositories/RepositorioAcmeEmBdr.php");
+require_once(dirname(__FILE__) . "/../model/Categoria.php");
+require_once(dirname(__FILE__) . "/../model/MateriaPrima.php");
 
 $descricao = htmlspecialchars($_POST['descricao']);
 $quantidade = htmlspecialchars($_POST['quantidade']);

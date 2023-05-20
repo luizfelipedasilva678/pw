@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Form</title>
 </head>
+
 <body>
     <form action="cadastrar.php" method="POST">
         <label for="descricao">Descrição: </label>
@@ -17,24 +19,25 @@
         <label for="custo">Categoria: </label>
         <select name="categoria" id="categoria">
             <?php
-                require_once('getConnection.php');
-                require_once('RepositorioAcmeEmBdr.php');
-                
-                try {
-                    $pdo = getConnection();
-                    $repositorio = new RepositorioAcmeEmBdr($pdo);
-                    $categorias = $repositorio->buscarCategorias();
-                    foreach($categorias as $categoria) {
-                        echo <<<TABLEROW
+            require_once(dirname(__FILE__) . "/../utils/getConnection.php");
+            require_once(dirname(__FILE__) . "/../repositories/RepositorioAcmeEmBdr.php");
+
+            try {
+                $pdo = getConnection();
+                $repositorio = new RepositorioAcmeEmBdr($pdo);
+                $categorias = $repositorio->buscarCategorias();
+                foreach ($categorias as $categoria) {
+                    echo <<<TABLEROW
                             <option value="{$categoria->getId()}">{$categoria->getNome()}</option>
                         TABLEROW;
-                    }
-                } catch(RepositorioException $e) {
-                    echo $e->getMessage();
                 }
+            } catch (RepositorioException $e) {
+                echo $e->getMessage();
+            }
             ?>
         </select>
         <button type="submit">Enviar</button>
     </form>
 </body>
+
 </html>

@@ -1,8 +1,9 @@
 <?php
-require_once('RepositorioAcme.php');
-require_once('RepositorioExeception.php');
-require_once('Categoria.php');
-require_once('MateriaPrima.php');
+
+require_once(dirname(__FILE__) . "/../interfaces/RepositorioAcme.php");
+require_once(dirname(__FILE__) . "/../exceptions/RepositorioExeception.php");
+require_once(dirname(__FILE__) . "/../model/Categoria.php");
+require_once(dirname(__FILE__) . "/../model/MateriaPrima.php");
 
 class RepositorioAcmeEmBdr implements RepositorioAcme
 {
