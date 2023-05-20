@@ -9,7 +9,7 @@
 </head>
 
 <body>
-    <a href="form.php">Cadastrar</a>
+    <a href="/views/form.php">Cadastrar</a>
 
     <table>
         <thead>
@@ -22,10 +22,10 @@
         </thead>
         <?php
         require_once(dirname(__FILE__) . "/utils/getConnection.php");
-        require_once(dirname(__FILE__) . "/repositories/RepositorioAcmeEmBdr.php");
+        require_once(dirname(__FILE__) . "/repositories/RepositorioMateriaPrimaEmBdr.php");
         try {
             $pdo = getConnection();
-            $repositorio = new RepositorioAcmeEmBdr($pdo);
+            $repositorio = new RepositorioMateriaPrimaEmBdr($pdo);
             $materiasPrimas = $repositorio->buscarMateriasPrimas();
             $media = $repositorio->buscarMediaCusto();
 

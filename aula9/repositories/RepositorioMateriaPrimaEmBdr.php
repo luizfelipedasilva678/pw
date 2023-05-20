@@ -1,11 +1,11 @@
 <?php
 
-require_once(dirname(__FILE__) . "/../interfaces/RepositorioAcme.php");
+require_once(dirname(__FILE__) . "/../interfaces/RepositorioMateriaPrima.php");
 require_once(dirname(__FILE__) . "/../exceptions/RepositorioExeception.php");
 require_once(dirname(__FILE__) . "/../model/Categoria.php");
 require_once(dirname(__FILE__) . "/../model/MateriaPrima.php");
 
-class RepositorioAcmeEmBdr implements RepositorioAcme
+class RepositorioMateriaPrimaEmBdr implements RepositorioMateriaPrima
 {
     private $pdo;
 
@@ -18,9 +18,9 @@ class RepositorioAcmeEmBdr implements RepositorioAcme
     {
         try {
             $ps = $this->pdo->query('
-                    select 
+                    select
                         AVG(mp.custo) as media_custo
-                    from 
+                    from
                         materia_prima mp
                 ');
 
@@ -32,42 +32,21 @@ class RepositorioAcmeEmBdr implements RepositorioAcme
         }
     }
 
-    public function buscarCategorias(): array
-    {
-        try {
-            $ps = $this->pdo->query('
-                    select 
-                        *
-                    from 
-                        categoria
-                ');
 
-            $objs = [];
-
-            foreach ($ps as $categoria) {
-                $c = new Categoria($categoria['id'], $categoria['nome']);
-                array_push($objs, $c);
-            }
-
-            return $objs;
-        } catch (PDOException $e) {
-            throw new RepositorioException("Erro ao listar");
-        }
-    }
 
     public function buscarMateriasPrimas(): array
     {
         try {
             $ps = $this->pdo->query(
                 '
-                    select 
+                    select
                         mp.id as materia_prima_id,
-                        mp.descricao, 
-                        mp.custo, 
-                        mp.quantidade, 
+                        mp.descricao,
+                        mp.custo,
+                        mp.quantidade,
                         c.id as categoria_id,
                         c.nome
-                    from 
+                    from
                         materia_prima mp
                     join categoria c on(mp.id_categoria = c.id)'
             );
@@ -92,9 +71,9 @@ class RepositorioAcmeEmBdr implements RepositorioAcme
         try {
             $ps = $this->pdo->prepare(
                 '
-                    update 
+                    update
                         materia_prima
-                    set 
+                    set
                         id_categoria = ?,
                         descricao = ?,
                         quantidade = ?,

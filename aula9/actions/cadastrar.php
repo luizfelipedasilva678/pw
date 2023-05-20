@@ -1,7 +1,7 @@
 <?php
 
 require_once(dirname(__FILE__) . "/../utils/getConnection.php");
-require_once(dirname(__FILE__) . "/../repositories/RepositorioAcmeEmBdr.php");
+require_once(dirname(__FILE__) . "/../repositories/RepositorioMateriaPrimaEmBdr.php");
 require_once(dirname(__FILE__) . "/../model/Categoria.php");
 require_once(dirname(__FILE__) . "/../model/MateriaPrima.php");
 
@@ -12,12 +12,12 @@ $categoriaId = htmlspecialchars($_POST['categoria']);
 
 try {
     $pdo = getConnection();
-    $repositorio = new RepositorioAcmeEmBdr($pdo);
+    $repositorio = new RepositorioMateriaPrimaEmBdr($pdo);
     $categoria = new Categoria($categoriaId, '');
     $materiaPrima = new MateriaPrima(0, $descricao, $quantidade, $custo, $categoria);
     $repositorio->cadastrarMateriaPrima($materiaPrima);
 
-    header('Location: index.php');
+    header('Location: /../index.php');
 } catch (RepositorioException $e) {
     echo $e->getMessage();
 }

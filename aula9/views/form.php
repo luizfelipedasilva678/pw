@@ -9,7 +9,7 @@
 </head>
 
 <body>
-    <form action="cadastrar.php" method="POST">
+    <form action="/../actions/cadastrar.php" method="POST">
         <label for="descricao">Descrição: </label>
         <input type="text" name="descricao" id="descricao">
         <label for="quantidade">Quantidade: </label>
@@ -20,12 +20,13 @@
         <select name="categoria" id="categoria">
             <?php
             require_once(dirname(__FILE__) . "/../utils/getConnection.php");
-            require_once(dirname(__FILE__) . "/../repositories/RepositorioAcmeEmBdr.php");
+            require_once(dirname(__FILE__) . "/../repositories/RepositorioCategoriaEmBdr.php");
 
             try {
                 $pdo = getConnection();
-                $repositorio = new RepositorioAcmeEmBdr($pdo);
-                $categorias = $repositorio->buscarCategorias();
+                $repositorioCategoria = new RepositorioCategoriaEmBdr($pdo);
+                $categorias = $repositorioCategoria->buscarCategorias();
+
                 foreach ($categorias as $categoria) {
                     echo <<<TABLEROW
                             <option value="{$categoria->getId()}">{$categoria->getNome()}</option>
