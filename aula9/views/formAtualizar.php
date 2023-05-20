@@ -13,6 +13,7 @@
     require_once(dirname(__FILE__) . "/../utils/getConnection.php");
     require_once(dirname(__FILE__) . "/../repositories/RepositorioCategoriaEmBdr.php");
     require_once(dirname(__FILE__) . "/../repositories/RepositorioMateriaPrimaEmBdr.php");
+    require_once(dirname(__FILE__) . "/../repositories/RepositorioUnidadeDeMedidaEmBdr.php");
 
     $id = htmlspecialchars($_GET['id']);
 
@@ -20,7 +21,10 @@
         $pdo = getConnection();
         $repositorioMp = new RepositorioMateriaPrimaEmBdr($pdo);
         $repositorioCategoria = new RepositorioCategoriaEmBdr($pdo);
+        $repositorioUns = new RepositorioUnidadeDeMedidaEmBdr($pdo);
         $categorias = $repositorioCategoria->buscarCategorias();
+        $uns = $repositorioUns->buscarUnidadesDeMedida();
+
         $materiaPrima = $repositorioMp->buscarMateriasPrimaPeloId($id);
 
         echo <<<BEGINFORM
@@ -42,8 +46,17 @@
                 <option {$selected} value="{$categoria->getId()}">{$categoria->getNome()}</option>
             OPTION;
         }
+        echo "</select>";
+        echo "<select name='unidade' id='unidade'>";
+        foreach ($uns as $un) {
+            $selected = $un->getId() === $materiaPrima->getUnidadeMedida()->getId() ? 'selected' : '';
+
+            echo <<<OPTION
+                <option {$selected} value="{$un->getId()}">{$un->getDescricao()}</option>
+            OPTION;
+        }
+        echo "</select>";
         echo <<<ENDFORM
-        </select>
         <button type='submit'> Atualizar </button>
         </form>
         ENDFORM;

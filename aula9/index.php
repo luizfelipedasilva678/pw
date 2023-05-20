@@ -35,7 +35,7 @@
                         <tr>
                             <td>{$materiaPrima->getId()}</td>
                             <td>{$materiaPrima->getDescricao()}</td>
-                            <td>{$materiaPrima->getQuantidade()}</td>
+                            <td>{$materiaPrima->getQuantidade()}{$materiaPrima->getUnidadeMedida()->getSigla()}</td>
                             <td>{$materiaPrima->getCusto()}</td>
                             <td>{$materiaPrima->getCategoria()->getNome()}</td>
                             <td>

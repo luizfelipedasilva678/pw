@@ -18,6 +18,7 @@ create table materia_prima(
         on update cascade
 )engine=INNODB;
 
+
 insert into categoria (id, nome) values (1, 'Categoria 0391');
 insert into categoria (id, nome) values (2, 'Categoria A025');
 insert into categoria (id, nome) values (3, 'Categoria I948');
@@ -420,6 +421,22 @@ insert into materia_prima (id_categoria, descricao, quantidade, custo) values (1
 insert into materia_prima (id_categoria, descricao, quantidade, custo) values (27, 'Descrição I037074Q', 526, 591);
 insert into materia_prima (id_categoria, descricao, quantidade, custo) values (190, 'Descrição X713320K', 4, 768);
 insert into materia_prima (id_categoria, descricao, quantidade, custo) values (26, 'Descrição A425811P', 400, 725);
+
+create table if not exists unidade_medida(
+    id int auto_increment primary key,
+    descricao varchar(40) not null unique,
+    sigla varchar(2) not null unique
+)engine=INNODB;
+
+insert into unidade_medida(descricao, sigla) values ('Kilogramas', 'Kg');
+insert into unidade_medida(descricao, sigla) values ('Metros', 'm');
+insert into unidade_medida(descricao, sigla) values ('Gramas', 'g');
+
+alter table materia_prima add id_unidade_medida int null default 1;
+alter table materia_prima
+add constraint fk_materia_prima_id_unidade_medida
+foreign key (id_unidade_medida) references unidade_medida(id) on delete restrict on update cascade;
+
 
 select mp.id as materia_prima_id, mp.descricao, mp.custo, mp.quantidade, c.id as categoria_id, c.nome
 from materia_prima mp

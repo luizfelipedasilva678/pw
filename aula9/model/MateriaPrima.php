@@ -6,14 +6,16 @@ class MateriaPrima
     private $quantidade;
     private $custo;
     private $categoria;
+    private $unidadeMedida;
 
-    public function __construct(int $id, string $descricao, int $quantidade, float $custo, object $categoria)
+    public function __construct(int $id, string $descricao, int $quantidade, float $custo, object $categoria, object $unidadeMedida)
     {
         $this->id = $id;
         $this->descricao = $descricao;
         $this->quantidade = $quantidade;
         $this->custo = $custo;
         $this->categoria = $categoria;
+        $this->unidadeMedida = $unidadeMedida;
     }
 
     public function getId()
@@ -34,6 +36,11 @@ class MateriaPrima
     public function getCusto()
     {
         return $this->custo;
+    }
+
+    public function getUnidadeMedida()
+    {
+        return $this->unidadeMedida;
     }
 
     public function getCategoria()
@@ -64,5 +71,10 @@ class MateriaPrima
     public function setCategoria(object $categoria)
     {
         $this->categoria = $categoria;
+    }
+
+    public function setUnidadeMedida(object $unidadeMedida)
+    {
+        $this->unidadeMedida = $unidadeMedida;
     }
 }

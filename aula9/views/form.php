@@ -17,26 +17,37 @@
         <label for="custo">Custo: </label>
         <input type="number" name="custo" id="custo">
         <label for="custo">Categoria: </label>
-        <select name="categoria" id="categoria">
-            <?php
-            require_once(dirname(__FILE__) . "/../utils/getConnection.php");
-            require_once(dirname(__FILE__) . "/../repositories/RepositorioCategoriaEmBdr.php");
+        <?php
+        require_once(dirname(__FILE__) . "/../utils/getConnection.php");
+        require_once(dirname(__FILE__) . "/../repositories/RepositorioCategoriaEmBdr.php");
+        require_once(dirname(__FILE__) . "/../repositories/RepositorioUnidadeDeMedidaEmBdr.php");
 
-            try {
-                $pdo = getConnection();
-                $repositorioCategoria = new RepositorioCategoriaEmBdr($pdo);
-                $categorias = $repositorioCategoria->buscarCategorias();
+        try {
+            $pdo = getConnection();
+            $repositorioCategoria = new RepositorioCategoriaEmBdr($pdo);
+            $repositorioUn = new RepositorioUnidadeDeMedidaEmBdr($pdo);
+            $categorias = $repositorioCategoria->buscarCategorias();
+            $uns = $repositorioUn->buscarUnidadesDeMedida();
 
-                foreach ($categorias as $categoria) {
-                    echo <<<OPTION
+            echo "<select name='categoria' id='categoria'>";
+            foreach ($categorias as $categoria) {
+                echo <<<OPTION
                         <option value="{$categoria->getId()}">{$categoria->getNome()}</option>
                     OPTION;
-                }
-            } catch (RepositorioException $e) {
-                echo $e->getMessage();
             }
-            ?>
-        </select>
+            echo '</select>';
+
+            echo "<select name='unidade' id='unidade'>";
+            foreach ($uns as $un) {
+                echo <<<OPTION
+                        <option value="{$un->getId()}">{$un->getDescricao()}</option>
+                    OPTION;
+            }
+            echo '</select>';
+        } catch (RepositorioException $e) {
+            echo $e->getMessage();
+        }
+        ?>
         <button type="submit">Enviar</button>
     </form>
 </body>

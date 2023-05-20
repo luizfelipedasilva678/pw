@@ -3,6 +3,7 @@
 require_once(dirname(__FILE__) . "/../interfaces/RepositorioMateriaPrima.php");
 require_once(dirname(__FILE__) . "/../exceptions/RepositorioExeception.php");
 require_once(dirname(__FILE__) . "/../model/Categoria.php");
+require_once(dirname(__FILE__) . "/../model/UnidadeDeMedida.php");
 require_once(dirname(__FILE__) . "/../model/MateriaPrima.php");
 
 class RepositorioMateriaPrimaEmBdr implements RepositorioMateriaPrima
@@ -43,10 +44,14 @@ class RepositorioMateriaPrimaEmBdr implements RepositorioMateriaPrima
                         mp.custo,
                         mp.quantidade,
                         c.id as categoria_id,
-                        c.nome
+                        c.nome,
+                        ud.descricao as ud_descricao,
+                        ud.sigla as ud_sigla,
+                        ud.id as ud_id
                     from
                         materia_prima mp
                     join categoria c on(mp.id_categoria = c.id)
+                    join unidade_medida ud on(mp.id_unidade_medida = ud.id)
                     where mp.id = ?'
             );
             $ps->execute([
@@ -55,7 +60,8 @@ class RepositorioMateriaPrimaEmBdr implements RepositorioMateriaPrima
 
             $mp = $ps->fetchObject();
             $categoria = new Categoria($mp->categoria_id, $mp->nome);
-            $materiaPrima = new MateriaPrima($mp->materia_prima_id, $mp->descricao, $mp->quantidade, $mp->custo, $categoria);
+            $unidadeMedida = new UnidadeDeMedida((int) $mp->ud_id, $mp->ud_descricao, $mp->ud_sigla);
+            $materiaPrima = new MateriaPrima($mp->materia_prima_id, $mp->descricao, $mp->quantidade, $mp->custo, $categoria, $unidadeMedida);
 
             return $materiaPrima;
         } catch (PDOException $e) {
@@ -69,23 +75,30 @@ class RepositorioMateriaPrimaEmBdr implements RepositorioMateriaPrima
         try {
             $ps = $this->pdo->query(
                 '
-                    select
-                        mp.id as materia_prima_id,
-                        mp.descricao,
-                        mp.custo,
-                        mp.quantidade,
-                        c.id as categoria_id,
-                        c.nome
-                    from
-                        materia_prima mp
-                    join categoria c on(mp.id_categoria = c.id)'
+                select
+                    mp.id as materia_prima_id,
+                    mp.descricao,
+                    mp.custo,
+                    mp.quantidade,
+                    c.id as categoria_id,
+                    c.nome,
+                    ud.descricao as ud_descricao,
+                    ud.sigla as ud_sigla,
+                    ud.id as ud_id
+                from
+                    materia_prima mp
+                join categoria c on(mp.id_categoria = c.id)
+                join unidade_medida ud on(mp.id_unidade_medida = ud.id)
+                order by mp.id desc
+            '
             );
 
             $materiasPrimas = [];
 
             foreach ($ps as $mp) {
                 $categoria = new Categoria($mp['categoria_id'], $mp['nome']);
-                $materiaPrima = new MateriaPrima($mp['materia_prima_id'], $mp['descricao'], $mp['quantidade'], $mp['custo'], $categoria);
+                $unidadeMedida = new UnidadeDeMedida((int) $mp['ud_id'], $mp['ud_descricao'], $mp['ud_sigla']);
+                $materiaPrima = new MateriaPrima($mp['materia_prima_id'], $mp['descricao'], $mp['quantidade'], $mp['custo'], $categoria, $unidadeMedida);
 
                 array_push($materiasPrimas, $materiaPrima);
             }
@@ -107,7 +120,8 @@ class RepositorioMateriaPrimaEmBdr implements RepositorioMateriaPrima
                         id_categoria = ?,
                         descricao = ?,
                         quantidade = ?,
-                        custo = ?
+                        custo = ?,
+                        id_unidade_medida = ?
                     where id = ?'
             );
 
@@ -116,7 +130,9 @@ class RepositorioMateriaPrimaEmBdr implements RepositorioMateriaPrima
                 $materiaPrima->getDescricao(),
                 $materiaPrima->getQuantidade(),
                 $materiaPrima->getCusto(),
-                $materiaPrima->getId()
+                $materiaPrima->getUnidadeMedida()->getId(),
+                $materiaPrima->getId(),
+
             ]);
         } catch (PDOException $e) {
             throw new RepositorioException("Erro ao atualizar");
@@ -127,18 +143,19 @@ class RepositorioMateriaPrimaEmBdr implements RepositorioMateriaPrima
     {
         try {
             $ps = $this->pdo->prepare('
-                    insert into materia_prima(id_categoria, descricao, quantidade, custo)
-                    values(?,?,?,?)
+                    insert into materia_prima(id_categoria, descricao, quantidade, custo, id_unidade_medida)
+                    values(?,?,?,?,?)
                 ');
 
             $ps->execute([
                 $materiaPrima->getCategoria()->getId(),
                 $materiaPrima->getDescricao(),
                 $materiaPrima->getQuantidade(),
-                $materiaPrima->getCusto()
+                $materiaPrima->getCusto(),
+                $materiaPrima->getUnidadeMedida()->getId()
             ]);
         } catch (PDOException $e) {
-            throw new RepositorioException("Erro ao atualizar");
+            throw new RepositorioException("Erro ao cadastrar" . $e->getMessage());
         }
     }
 
