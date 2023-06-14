@@ -1,7 +1,7 @@
 <?php
-require(dirname(__FILE__) . '../interfaces/RepositorioNoticias.php');
-require(dirname(__FILE__) . '../exceptions/RepositorioNoticiaExeception.php');
-require(dirname(__FILE__) . '../model/Noticia.php');
+require(dirname(__FILE__) . '/../interfaces/RepositorioNoticia.php');
+require(dirname(__FILE__) . '/../exceptions/RepositorioNoticiaExeception.php');
+require(dirname(__FILE__) . '/../model/Noticia.php');
 
 class RepositorioNoticaEmBdr implements RepositorioNotica
 {
@@ -16,21 +16,24 @@ class RepositorioNoticaEmBdr implements RepositorioNotica
     {
         try {
             $ps = $this->pdo->query("SELECT * FROM noticia");
-            $noticas = [];
+            $noticias = [];
 
             foreach ($ps as $noticia) {
-                array_push($noticas, new Noticia(
-                    $noticia['id'],
-                    $noticia['titulo'],
-                    $noticia['usuario'],
-                    $noticia['conteudo'],
-                    new DateTime(
-                        $noticia['created_at']
+                array_push(
+                    $noticias,
+                    new Noticia(
+                        $noticia['id'],
+                        $noticia['titulo'],
+                        $noticia['usuario'],
+                        $noticia['conteudo'],
+                        new DateTime(
+                            $noticia['created_at']
+                        )
                     )
-                ));
+                );
             }
 
-            return $noticas;
+            return $noticias;
         } catch (PDOException $e) {
             throw new RepositorioNoticiaExeception($e->getMessage());
         }
@@ -40,6 +43,9 @@ class RepositorioNoticaEmBdr implements RepositorioNotica
     {
         try {
             $ps = $this->pdo->prepare("SELECT * FROM noticia where id = ?");
+            $ps->execute([
+                $id
+            ]);
             $result = $ps->fetchObject();
 
             return new Noticia(
@@ -91,8 +97,8 @@ class RepositorioNoticaEmBdr implements RepositorioNotica
 
             $ps->execute([
                 $noticia->titulo,
-                $noticia->usuario,
                 $noticia->conteudo,
+                $noticia->usuario,
                 $noticia->id
             ]);
         } catch (PDOException $e) {
