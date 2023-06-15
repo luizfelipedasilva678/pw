@@ -12,10 +12,41 @@ class RepositorioNoticaEmBdr implements RepositorioNotica
         $this->pdo = $pdo;
     }
 
-    public function buscarNoticias(): array
+    public function buscarNoticias(string $filter, bool $isDateFilter, object|false $order): array
     {
         try {
-            $ps = $this->pdo->query("SELECT * FROM noticia");
+            $hasFilter = $filter !== '' ? true : false;
+            $sqlString = "SELECT * FROM noticia";
+
+            if ($hasFilter) {
+                if ($isDateFilter) {
+                    $sqlString .= " where created_at = ?";
+                } else {
+                    $sqlString .= " where titulo = ? or conteudo = ?";
+                }
+            }
+
+            if ($order !== false) {
+                $sqlString .= " order by {$order->field} {$order->desc}";
+            }
+
+            $ps = $this->pdo->prepare($sqlString);
+
+            if ($hasFilter) {
+                if ($isDateFilter) {
+                    $ps->execute([
+                        $filter,
+                    ]);
+                } else {
+                    $ps->execute([
+                        $filter,
+                        $filter,
+                    ]);
+                }
+            } else {
+                $ps->execute();
+            }
+
             $noticias = [];
 
             foreach ($ps as $noticia) {

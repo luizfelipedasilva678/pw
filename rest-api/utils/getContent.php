@@ -2,5 +2,12 @@
 function getContent()
 {
     $contentType = getallheaders()['Content-Type'];
-    return json_decode(file_get_contents("php://input"));
+    $content = file_get_contents("php://input");
+
+    if ($contentType === 'application/json') {
+        return json_decode($content);
+    } else {
+        mb_parse_str($content, $urlDecoded);
+        return (object) $urlDecoded;
+    }
 }
